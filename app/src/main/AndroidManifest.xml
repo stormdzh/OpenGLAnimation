@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.stormdzh.openglanimation">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activity.function.PointActivity" />
+        <activity android:name=".ui.activity.function.LineActivity" />
+        <activity android:name=".ui.activity.function.TriangleActivity" />
+        <activity android:name=".ui.activity.function.RectangleActivity" />
+        <activity android:name=".ui.activity.function.StarActivity" />
+        <activity android:name=".ui.activity.function.TrapezoidActivity" />
+        <activity android:name=".ui.activity.function.CircleActivity" />
+        <activity android:name=".ui.activity.function.PicActivity" />
+        <activity
+            android:name=".ui.activity.function.YuvActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.activity.function.YuvPicActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".ui.activity.function.TranslateActivity" />
+        <activity android:name=".ui.activity.function.TotateActivity" />
+        <activity android:name=".ui.activity.function.ScaleActivity" />
+    </application>
+
+</manifest>
