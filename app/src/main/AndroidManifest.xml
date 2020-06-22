@@ -42,6 +42,7 @@
         <activity android:name=".ui.activity.function.TranslateActivity" />
         <activity android:name=".ui.activity.function.TotateActivity" />
         <activity android:name=".ui.activity.function.ScaleActivity" />
+        <activity android:name=".ui.activity.function.AlphaShapeActivity" />
     </application>
 
 </manifest>

@@ -143,7 +143,7 @@ public class ScaleRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl10) {
         LogUtil.i(TAG, "onDrawFrame");
-        //清屏-清空fbo
+        //清屏
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         GLES20.glClearColor(0, 0, 0, 1);
 
@@ -181,4 +181,5 @@ public class ScaleRenderer implements GLSurfaceView.Renderer {
     }
 
     private long lastTime = 0;
+
 }

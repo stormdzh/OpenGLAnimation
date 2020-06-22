@@ -3,6 +3,7 @@ package com.stormdzh.openglanimation.renderer;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.opengl.Matrix;
 
 import com.stormdzh.openglanimation.R;
 import com.stormdzh.openglanimation.util.LogUtil;
@@ -16,11 +17,11 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
- * @Description: 三角形-着色器
+ * @Description: 透明度渐变动画
  * @Author: dzh
  * @CreateDate: 2020-06-16 18:28
  */
-public class TriangleRenderer implements GLSurfaceView.Renderer {
+public class AlphaShapeRenderer implements GLSurfaceView.Renderer {
     private String TAG = "LineRenderer";
 
     private Context mContext;
@@ -38,7 +39,7 @@ public class TriangleRenderer implements GLSurfaceView.Renderer {
     private FloatBuffer vertexBuffer;
 
 
-    public TriangleRenderer(Context context) {
+    public AlphaShapeRenderer(Context context) {
         this.mContext = context;
         //顶点数据转成ByteBuffer  乘4是因为floa是4个字节
         vertexBuffer = ByteBuffer.allocateDirect(vertexData.length * 4)
@@ -73,6 +74,9 @@ public class TriangleRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl10) {
         LogUtil.i(TAG, "onDrawFrame");
+        GLES20.glEnable(GLES20.GL_BLEND);
+        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+
         //清屏
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glClearColor(0, 0, 0, 1);
@@ -86,10 +90,21 @@ public class TriangleRenderer implements GLSurfaceView.Renderer {
         //3、给顶点属性赋值
         GLES20.glVertexAttribPointer(avPosition, 2, GLES20.GL_FLOAT, false, 2 * 4, vertexBuffer);
 
-        //给颜色赋值
-        GLES20.glUniform4f(afColor, 1f, 1f, 1f, 1);
+        if (System.currentTimeMillis() - lastTime > 100) {
+            lastTime = System.currentTimeMillis();
+            GLES20.glUniform4f(afColor, 1f, 1f, 1f, alpha);
+            if (alpha >= 1) {
+                alpha = 0.1f;
+            } else {
+                alpha += 0.1f;
+            }
+        }
+
 
         //绘制
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 3);
     }
+
+    private long lastTime = 0;
+    private float alpha = 0.1f;
 }

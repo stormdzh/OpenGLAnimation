@@ -119,7 +119,7 @@ public class YuvRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl10) {
         LogUtil.i(TAG, "onDrawFrame");
-        //清屏-清空fbo
+        //清屏
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glClearColor(1, 0, 0, 1);
 //        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);

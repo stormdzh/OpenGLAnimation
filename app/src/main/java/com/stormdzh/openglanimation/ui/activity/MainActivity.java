@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.stormdzh.openglanimation.R;
 import com.stormdzh.openglanimation.entity.common.FunctionEntity;
+import com.stormdzh.openglanimation.ui.activity.function.AlphaShapeActivity;
 import com.stormdzh.openglanimation.ui.activity.function.CircleActivity;
 import com.stormdzh.openglanimation.ui.activity.function.LineActivity;
 import com.stormdzh.openglanimation.ui.activity.function.PicActivity;
@@ -96,5 +97,6 @@ public class MainActivity extends AppCompatActivity {
         functionList.add(new FunctionEntity("OpenGL 位移动画", TranslateActivity.class));
         functionList.add(new FunctionEntity("OpenGL 动旋动画", TotateActivity.class));
         functionList.add(new FunctionEntity("OpenGL 缩放动画", ScaleActivity.class));
+        functionList.add(new FunctionEntity("OpenGL Alpha动画", AlphaShapeActivity.class));
     }
 }
