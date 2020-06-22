@@ -43,6 +43,7 @@
         <activity android:name=".ui.activity.function.TotateActivity" />
         <activity android:name=".ui.activity.function.ScaleActivity" />
         <activity android:name=".ui.activity.function.AlphaShapeActivity" />
+        <activity android:name=".ui.activity.function.AlphaPicActivity" />
     </application>
 
 </manifest>
