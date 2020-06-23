@@ -20,7 +20,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 /**
  * @Description: 图片-着色器
- * 问题：线条的宽度改怎么处理呢？
  * @Author: dzh
  * @CreateDate: 2020-06-16 18:28
  */
@@ -33,7 +32,7 @@ public class PicRenderer implements GLSurfaceView.Renderer {
 
     private int avPosition;
     private int afPosition;
-    private int sTexure;
+//    private int sTexure;
 
     //顶点数据
     private float[] vertexData = {
@@ -94,7 +93,7 @@ public class PicRenderer implements GLSurfaceView.Renderer {
         if (program > 0) {
             avPosition = GLES20.glGetAttribLocation(program, "av_Position");
             afPosition = GLES20.glGetAttribLocation(program, "af_Position");
-            sTexure = GLES20.glGetUniformLocation(program, "s_Texture");
+//            sTexure = GLES20.glGetUniformLocation(program, "s_Texture");
 
 
             //处理纹理
@@ -115,7 +114,7 @@ public class PicRenderer implements GLSurfaceView.Renderer {
 
             Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.img_opgl_test);
             if (bitmap == null) return;
-            //设置图片
+            // 加载纹理到 OpenGL，读入 Bitmap 定义的位图数据，并把它复制到当前绑定的纹理对象
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 
             if (bitmap != null) {

@@ -156,7 +156,6 @@ public class ScaleRenderer implements GLSurfaceView.Renderer {
         if (System.currentTimeMillis() - lastTime > 20) {
             lastTime = System.currentTimeMillis();
             float v = vertexBuffer.get(0);
-//            Log.i("adu", "v:" + v);
             if (Math.abs(v) > 1) {
                 for (int i = 0; i < 8; i++) {
                     vertexBuffer.put(i, vertexData[i]);
