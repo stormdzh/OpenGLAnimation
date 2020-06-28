@@ -1,4 +1,4 @@
-package com.stormdzh.openglanimation.customview.gt;
+package com.stormdzh.openglanimation.customview.boder;
 
 import android.opengl.GLES20;
 
@@ -7,12 +7,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-
-/**
- * Created by lifuhao on 19-6-20.
- */
 public class GLHelper {
-
 
 
     private static short drawIndices[] = {0, 1, 2, 0, 2, 3};
@@ -33,26 +28,6 @@ public class GLHelper {
     public static int COORDS_PER_VERTEX = 2;
     public static int TEXTURE_COORDS_PER_VERTEX = 2;
 
-
-    public static void createOESFrameBuff(int[] frameBuffer, int[] frameBufferTex, int width, int height) {
-        GLES20.glGenFramebuffers(1, frameBuffer, 0);
-        GLES20.glGenTextures(1, frameBufferTex, 0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, frameBufferTex[0]);
-        GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, width, height, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
-        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, frameBuffer[0]);
-        GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, frameBufferTex[0], 0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-        GLESTools.checkGlError("createCamFrameBuff");
-    }
 
     public static void enableVertex(int posLoc, int texLoc, FloatBuffer shapeBuffer, FloatBuffer texBuffer) {
         GLES20.glEnableVertexAttribArray(posLoc);
@@ -130,7 +105,6 @@ public class GLHelper {
     private static float flip(final float i) {
         return (1.0f - i);
     }
-
 
 
 }

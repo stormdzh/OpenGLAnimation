@@ -14,6 +14,7 @@ import com.stormdzh.openglanimation.R;
 import com.stormdzh.openglanimation.entity.common.FunctionEntity;
 import com.stormdzh.openglanimation.ui.activity.function.AlphaPicActivity;
 import com.stormdzh.openglanimation.ui.activity.function.AlphaShapeActivity;
+import com.stormdzh.openglanimation.ui.activity.function.BorderActivity;
 import com.stormdzh.openglanimation.ui.activity.function.CircleActivity;
 import com.stormdzh.openglanimation.ui.activity.function.LineActivity;
 import com.stormdzh.openglanimation.ui.activity.function.PicActivity;
@@ -100,5 +101,6 @@ public class MainActivity extends AppCompatActivity {
         functionList.add(new FunctionEntity("OpenGL 缩放动画", ScaleActivity.class));
         functionList.add(new FunctionEntity("OpenGL 形状Alpha动画", AlphaShapeActivity.class));
         functionList.add(new FunctionEntity("OpenGL 图片Alpha动画", AlphaPicActivity.class));
+        functionList.add(new FunctionEntity("OpenGL 焦点边框", BorderActivity.class));
     }
 }

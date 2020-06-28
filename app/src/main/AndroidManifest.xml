@@ -44,6 +44,7 @@
         <activity android:name=".ui.activity.function.ScaleActivity" />
         <activity android:name=".ui.activity.function.AlphaShapeActivity" />
         <activity android:name=".ui.activity.function.AlphaPicActivity" />
+        <activity android:name=".ui.activity.function.BorderActivity" />
     </application>
 
 </manifest>

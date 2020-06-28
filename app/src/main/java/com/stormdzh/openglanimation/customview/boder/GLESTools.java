@@ -1,4 +1,4 @@
-package com.stormdzh.openglanimation.customview.gt;
+package com.stormdzh.openglanimation.customview.boder;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
