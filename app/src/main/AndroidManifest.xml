@@ -45,6 +45,7 @@
         <activity android:name=".ui.activity.function.AlphaShapeActivity" />
         <activity android:name=".ui.activity.function.AlphaPicActivity" />
         <activity android:name=".ui.activity.function.BorderActivity" />
+        <activity android:name=".ui.activity.function.TVFocusActivity" />
     </application>
 
 </manifest>

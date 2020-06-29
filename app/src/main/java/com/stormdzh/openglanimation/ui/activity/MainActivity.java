@@ -22,6 +22,7 @@ import com.stormdzh.openglanimation.ui.activity.function.PointActivity;
 import com.stormdzh.openglanimation.ui.activity.function.RectangleActivity;
 import com.stormdzh.openglanimation.ui.activity.function.ScaleActivity;
 import com.stormdzh.openglanimation.ui.activity.function.StarActivity;
+import com.stormdzh.openglanimation.ui.activity.function.TVFocusActivity;
 import com.stormdzh.openglanimation.ui.activity.function.TotateActivity;
 import com.stormdzh.openglanimation.ui.activity.function.TranslateActivity;
 import com.stormdzh.openglanimation.ui.activity.function.TrapezoidActivity;
@@ -102,5 +103,6 @@ public class MainActivity extends AppCompatActivity {
         functionList.add(new FunctionEntity("OpenGL 形状Alpha动画", AlphaShapeActivity.class));
         functionList.add(new FunctionEntity("OpenGL 图片Alpha动画", AlphaPicActivity.class));
         functionList.add(new FunctionEntity("OpenGL 焦点边框", BorderActivity.class));
+        functionList.add(new FunctionEntity("OpenGL TV焦点页面", TVFocusActivity.class));
     }
 }

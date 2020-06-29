@@ -43,7 +43,8 @@ public class FunctionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final FunctionEntity functionEntity = mFunctionList.get(position);
 
         viewHolder.tvName.setText(functionEntity.name);
-        viewHolder.itemView.setBackgroundColor(position % 2 == 0 ? Color.parseColor("#f4f4f4") : Color.parseColor("#6C7B8B"));
+//        viewHolder.itemView.setBackgroundColor(position % 2 == 0 ? Color.parseColor("#f4f4f4") : Color.parseColor("#6C7B8B"));
+        viewHolder.itemView.setBackgroundResource(position % 2 == 0?R.drawable.selector_test:R.drawable.selector_test2);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

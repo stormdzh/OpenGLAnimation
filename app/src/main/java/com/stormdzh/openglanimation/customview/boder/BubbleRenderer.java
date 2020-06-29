@@ -8,6 +8,7 @@ import android.opengl.GLUtils;
 
 import com.stormdzh.openglanimation.R;
 import com.stormdzh.openglanimation.util.DeviceUtil;
+import com.stormdzh.openglanimation.util.LogUtil;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
@@ -96,7 +97,7 @@ public class BubbleRenderer {
     }
 
     //生成一个气泡对象
-    public PPItem getPPItem(int orientation, int index) {
+    public PPItem getBubbleItem(int orientation, int index) {
         PPItem item = new PPItem();
         item.orientation = orientation;
         item.scaleSize = random.nextFloat() * (maxScale - minScale) + minScale;
@@ -107,7 +108,7 @@ public class BubbleRenderer {
     }
 
     //设置气泡数组
-    private void setPPData() {
+    private void initBubbleData() {
         mBubbleList.clear();
 
         int xNum = (int) Math.ceil((float) mWidth / (float) pixPPUnit) + 1;
@@ -115,16 +116,16 @@ public class BubbleRenderer {
 
 //        LogUtil.i("adu","xNum:"+xNum+"  yNum:"+yNum);
         for (int i = 0; i < yNum; i++) {
-            mBubbleList.add(getPPItem(OrientationLeft, i));
+            mBubbleList.add(getBubbleItem(OrientationLeft, i));
         }
         for (int i = 0; i < yNum; i++) {
-            mBubbleList.add(getPPItem(OrientationRight, i));
+            mBubbleList.add(getBubbleItem(OrientationRight, i));
         }
         for (int i = 0; i < xNum; i++) {
-            mBubbleList.add(getPPItem(OrientationTop, i));
+            mBubbleList.add(getBubbleItem(OrientationTop, i));
         }
         for (int i = 0; i < xNum; i++) {
-            mBubbleList.add(getPPItem(OrientationBottom, i));
+            mBubbleList.add(getBubbleItem(OrientationBottom, i));
         }
     }
 
@@ -137,7 +138,8 @@ public class BubbleRenderer {
 
         initBuffer();
 
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.focus_border_pp);
+//        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.focus_border_pp);
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.focus_bubble_red);
         ppTexture = GLESTools.loadTexture(bitmap, GLESTools.NO_TEXTURE);
 
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
@@ -153,11 +155,20 @@ public class BubbleRenderer {
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
 
-        this.mWidth = width;
-        this.mHeight = height;
-        bubbleW = 0.02f;
+//        bubbleW = 0.02f;
         bubbleH = 0.02f;
-        setPPData();
+        if (mWidth!=width) {
+            this.mWidth = width;
+            this.mHeight = height;
+//            isPerChange = false;
+            bubbleW = bubbleH * height / width;
+            LogUtil.i("adu", "气泡 onSurfaceChanged  bubbleW:"+bubbleW+"    bubbleH:"+bubbleH+"   mWidth:"+mWidth+"   mHeight:"+mHeight);
+//            LogUtil.i("adu", "气泡 bubbleW:" + bubbleW);
+            initBubbleData();
+            for (PPItem ppItem : mBubbleList) {
+                ppItem.setPPLocation();
+            }
+        }
     }
 
     public void onDrawFrame(GL10 gl) {
@@ -201,6 +212,8 @@ public class BubbleRenderer {
             ppVertices[6] = bubbleW;
             ppVertices[7] = bubbleH;
             bubbleScale(scaleSize);
+
+//            LogUtil.i("adu", "气泡 index:"+index+"  bubbleW:"+bubbleW+"  bubbleH:"+bubbleH);
 
             int mideaHei = mHeight / 2;
             int mideaWid = mWidth / 2;

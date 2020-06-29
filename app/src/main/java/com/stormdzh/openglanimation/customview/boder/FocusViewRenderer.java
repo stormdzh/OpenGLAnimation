@@ -33,11 +33,6 @@ public class FocusViewRenderer {
     private FloatBuffer shapeBuffer;
     private FloatBuffer textrueBuffer;
 
-    //计算 物体实际的渲染位置
-//    private RectF showRectF;
-//    private float pixVerticesW, pixVerticesH;
-
-
     private int glViewProgram;
     private int glViewTextureLoc;
     private int glViewPostionLoc;
@@ -82,11 +77,6 @@ public class FocusViewRenderer {
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
 
-//        pixVerticesW = width / width;
-//        pixVerticesH = height / height;
-//        pixVerticesW = 2.0f / width;
-//        pixVerticesH = 2.0f / height;
-
         rootViewSufaceTexture = new SurfaceTexture(ROOT_TEX_ID);
         rootViewSuface = new Surface(rootViewSufaceTexture);
 
@@ -99,23 +89,18 @@ public class FocusViewRenderer {
 
     }
 
-    boolean isSetImg = false;
 
     public void onDrawFrame(GL10 gl) {
 
         //绘制图片
-        if (drawView != null && !isSetImg) {
-            isSetImg = true;
+        if (drawView != null && viewIsChange) {
+            viewIsChange = false;
             rootViewSufaceTexture.setDefaultBufferSize(drawView.getMeasuredWidth(), drawView.getMeasuredHeight());
             updateViewLoacation();
 
             updateRunderViewTexture();
 
         }
-
-//        if (drawView != null) {
-//            updateRunderViewTexture();
-//        }
 
         //draw texture
         GLES20.glUseProgram(glViewProgram);
@@ -132,12 +117,11 @@ public class FocusViewRenderer {
 
     }
 
+    private boolean viewIsChange = true;
+
     public void setRunderView(View view) {
+        viewIsChange = true;
         drawView = view;
-//        if(rootViewSufaceTexture!=null) {
-//            rootViewSufaceTexture.setDefaultBufferSize(drawView.getMeasuredWidth(), drawView.getMeasuredHeight());
-//        }
-//        updateViewLoacation();
     }
 
     public void updateRunderViewTexture() {
@@ -150,38 +134,30 @@ public class FocusViewRenderer {
     }
 
 
-    private float per = 0.82f;
+    private float bubbleWidthPer = 0.82f;//气泡占据顶点坐标的百分比
+    private float bubbleHeightPer = 0.82f;//气泡占据顶点坐标的百分比
 
     public void updateViewLoacation() {
 
-//        showRectF = FocusViewTools.getFocusRect(drawView, pixVerticesW, pixVerticesH);
-
-//        squareVertices[0] = showRectF.left;
-//        squareVertices[1] = showRectF.top;
-//
-//        squareVertices[2] = showRectF.left;
-//        squareVertices[3] = showRectF.bottom;
-//
-//        squareVertices[4] = showRectF.right;
-//        squareVertices[5] = showRectF.bottom;
-//
-//        squareVertices[6] = showRectF.right;
-//        squareVertices[7] = showRectF.top;
-
         if (squareVertices == null) return;
-        squareVertices[0] = squareVertices[0] * per;
-        squareVertices[1] = squareVertices[1] * per;
-        squareVertices[2] = squareVertices[2] * per;
-        squareVertices[3] = squareVertices[3] * per;
-        squareVertices[4] = squareVertices[4] * per;
-        squareVertices[5] = squareVertices[5] * per;
-        squareVertices[6] = squareVertices[6] * per;
-        squareVertices[7] = squareVertices[7] * per;
+        squareVertices[0] = squareVertices[0] * bubbleWidthPer;
+        squareVertices[1] = squareVertices[1] * bubbleHeightPer;
+        squareVertices[2] = squareVertices[2] * bubbleWidthPer;
+        squareVertices[3] = squareVertices[3] * bubbleHeightPer;
+        squareVertices[4] = squareVertices[4] * bubbleWidthPer;
+        squareVertices[5] = squareVertices[5] * bubbleHeightPer;
+        squareVertices[6] = squareVertices[6] * bubbleWidthPer;
+        squareVertices[7] = squareVertices[7] * bubbleHeightPer;
 
         shapeBuffer.clear();
         shapeBuffer.put(squareVertices);
         shapeBuffer.position(0);
 
 
+    }
+
+    public void setBublePer(float bubbleWidthPer, float bubbleHeightPer) {
+        this.bubbleWidthPer = 1 - bubbleWidthPer;
+        this.bubbleHeightPer = 1 - bubbleHeightPer;
     }
 }

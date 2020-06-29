@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:focusable="true"
+    android:background="@drawable/selector_test"
     android:orientation="vertical">
 
     <TextView
@@ -12,5 +14,6 @@
         android:text="name"
         android:textColor="#000000"
         android:textStyle="bold" />
+
 
 </LinearLayout>
