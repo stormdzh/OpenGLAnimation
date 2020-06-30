@@ -3,6 +3,7 @@ package com.stormdzh.openglanimation.ui.activity.function;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
@@ -19,6 +20,7 @@ import com.stormdzh.openglanimation.util.LogUtil;
 public class TVFocusActivity extends Activity implements View.OnFocusChangeListener {
     private String TAG = "boder";
 
+    private ImageView imgLine401;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +54,27 @@ public class TVFocusActivity extends Activity implements View.OnFocusChangeListe
         findViewById(R.id.tvLine405).setOnFocusChangeListener(this);
         findViewById(R.id.tvLine406).setOnFocusChangeListener(this);
         findViewById(R.id.tvLine407).setOnFocusChangeListener(this);
+
+        imgLine401=findViewById(R.id.imgLine401);
+        setImage();
+    }
+
+    private int count=0;
+    private void setImage() {
+
+        imgLine401.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(count%2==0) {
+                    imgLine401.setImageResource(R.drawable.img_opgl_test);
+                }else{
+                    imgLine401.setImageResource(R.drawable.img_opgl_test_2);
+                }
+                count++;
+                setImage();
+            }
+        },2000);
+
     }
 
     private FocusHLMgr mFocusHLMgr;

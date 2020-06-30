@@ -94,7 +94,7 @@ public class FocusViewRenderer {
     public void onDrawFrame(GL10 gl) {
 
         //绘制图片
-        if (drawView != null && viewIsChange) {
+        if (drawView != null && (viewIsChange||refresh())) {
             viewIsChange = false;
             rootViewSufaceTexture.setDefaultBufferSize(drawView.getMeasuredWidth(), drawView.getMeasuredHeight());
             squareVertices = Arrays.copyOf(GLHelper.SquareVertices, GLHelper.SquareVertices.length);
@@ -117,6 +117,16 @@ public class FocusViewRenderer {
 
         GLHelper.disableVertex(glViewPostionLoc, glViewTextureCoordLoc);
 
+    }
+
+    private long endTime = 0;
+
+    private boolean refresh() {
+        if (System.currentTimeMillis()-endTime > 500) {
+            endTime = System.currentTimeMillis();
+            return true;
+        }
+        return false;
     }
 
     private boolean viewIsChange = true;
@@ -142,7 +152,7 @@ public class FocusViewRenderer {
     public void updateViewLoacation() {
 
         if (squareVertices == null) return;
-        Log.i("adu","焦点控件中   bubbleWidthPer："+bubbleWidthPer+   "  bubbleHeightPer:"+bubbleHeightPer);
+        Log.i("adu", "焦点控件中   bubbleWidthPer：" + bubbleWidthPer + "  bubbleHeightPer:" + bubbleHeightPer);
         squareVertices[0] = squareVertices[0] * bubbleWidthPer;
         squareVertices[1] = squareVertices[1] * bubbleHeightPer;
         squareVertices[2] = squareVertices[2] * bubbleWidthPer;
