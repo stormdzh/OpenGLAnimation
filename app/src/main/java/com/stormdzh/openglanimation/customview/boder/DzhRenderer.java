@@ -35,7 +35,6 @@ public class DzhRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
-//        LogUtil.i("adu", "render surfaceChanged");
         GLES20.glClearColor(0, 0, 0, 0.1f);
 
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
@@ -52,7 +51,7 @@ public class DzhRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        LogUtil.i("adu", "render onSurfaceChanged  width:"+width+"   height:"+height);
+        LogUtil.i("adu", "render onSurfaceChanged  width:" + width + "   height:" + height);
         this.mWidth = width;
         this.mHeight = height;
         GLES20.glViewport(0, 0, mWidth, mHeight);
@@ -61,30 +60,66 @@ public class DzhRenderer implements GLSurfaceView.Renderer {
         mFocusViewRenderer.onSurfaceChanged(gl, width, height);
     }
 
+    private long endTime=0;
+    private long startTime=0;
+    private long dt=0;
+    private long frameTiem=26;
+
     @Override
     public void onDrawFrame(GL10 gl) {
-//        LogUtil.i("adu","render onDrawFrame");
+
+        endTime = System.currentTimeMillis();
+        dt = endTime - startTime;
+        if (dt < frameTiem) {
+            try {
+                Thread.sleep(frameTiem - dt);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        startTime = System.currentTimeMillis();
+
         GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT
                 | GLES20.GL_COLOR_BUFFER_BIT);
-
         GLES20.glViewport(0, 0, mWidth, mHeight);
-//        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.1f);
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0f);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
 
-        BgRender.onDrawFrame(gl);
-        mBubbleRenderer.onDrawFrame(gl);
-        mFocusViewRenderer.onDrawFrame(gl);
+        if (BgRender != null) {
+            BgRender.onDrawFrame(gl);
+        }
+        if (mBubbleRenderer != null) {
+            mBubbleRenderer.onDrawFrame(gl);
+        }
+        if (mFocusViewRenderer != null) {
+            mFocusViewRenderer.onDrawFrame(gl);
+        }
 
     }
 
     public void setFocusView(View focusView) {
-        mFocusViewRenderer.setRunderView(focusView);
+        if(mFocusViewRenderer!=null) {
+            mFocusViewRenderer.setRunderView(focusView);
+        }
 
     }
 
     public void setBublePer(float bubbleWidthPer, float bubbleHeightPer) {
-        mFocusViewRenderer.setBublePer(bubbleWidthPer,bubbleHeightPer);
+        if(mFocusViewRenderer!=null) {
+            mFocusViewRenderer.setBublePer(bubbleWidthPer, bubbleHeightPer);
+        }
+    }
+
+    public void destroy() {
+        if (BgRender != null) {
+            BgRender.destroy();
+        }
+        if (mBubbleRenderer != null) {
+            mBubbleRenderer.destroy();
+        }
+        if (mFocusViewRenderer != null) {
+            mFocusViewRenderer.destroy();
+        }
     }
 }

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.stormdzh.openglanimation.util.DeviceUtil;
-import com.stormdzh.openglanimation.util.LogUtil;
 
 /**
  * @Description: surfaceView
@@ -48,36 +47,38 @@ public class DzhGLSurfaceView extends GLSurfaceView {
         mDzhRenderer = new DzhRenderer(getContext());
         setRenderer(mDzhRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-//        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     public void setFocusView(View focusView) {
-        mDzhRenderer.setFocusView(focusView);
+        if (mDzhRenderer != null) {
+            mDzhRenderer.setFocusView(focusView);
+        }
     }
 
     /**
      * 释放
      */
     public void destroy() {
-
+        onPause();
+        if(mDzhRenderer!=null) {
+            mDzhRenderer.destroy();
+            mDzhRenderer = null;
+        }
     }
 
     public void setBorderSize(View itemView, int x, int y, int width, int height, float scale) {
 
         //设置跟布局的尺寸
         ViewGroup.LayoutParams rootLayoutParams = getLayoutParams();
-        rootLayoutParams.width = (int) (width  + bubbleWidth * 2);
-        rootLayoutParams.height = (int) (height  + bubbleWidth * 2);
+        rootLayoutParams.width = (int) (width + bubbleWidth * 2);
+        rootLayoutParams.height = (int) (height + bubbleWidth * 2);
         setLayoutParams(rootLayoutParams);
 
-        bubbleWidthPer =bubbleWidth*2f / (width  + bubbleWidth*2f);
-        bubbleHeightPer = bubbleWidth*2f / (height  + bubbleWidth*2f);
-
-        LogUtil.i("adu", "计算尺寸 width:" + width + "  height:" + height + "  bubbleWidth:" + bubbleWidth);
-        LogUtil.i("adu", " 获取焦点控件尺寸 width:" + itemView.getWidth() + "  height:" + itemView.getHeight());
-        LogUtil.i("adu", "计算比例 bubbleWidthPer:" + bubbleWidthPer + "  bubbleHeightPer:" + bubbleHeightPer);
-
-        mDzhRenderer.setBublePer(bubbleWidthPer, bubbleHeightPer);
+        bubbleWidthPer = bubbleWidth * 2f / (width + bubbleWidth * 2f);
+        bubbleHeightPer = bubbleWidth * 2f / (height + bubbleWidth * 2f);
+        if (mDzhRenderer != null) {
+            mDzhRenderer.setBublePer(bubbleWidthPer, bubbleHeightPer);
+        }
 
     }
 
@@ -88,30 +89,14 @@ public class DzhGLSurfaceView extends GLSurfaceView {
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        super.surfaceDestroyed(holder);
-//        LogUtil.i("adu", "surfaceDestroyed");
-    }
-
-    @Override
     public void surfaceCreated(SurfaceHolder holder) {
         super.surfaceCreated(holder);
-//        LogUtil.i("adu", "surfaceCreated");
         onResume();
     }
 
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        super.surfaceChanged(holder, format, w, h);
-//        LogUtil.i("adu", "surfaceChanged");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
     public void onMPause() {
-        mDzhRenderer.setBublePer(0, 0);
+        if (mDzhRenderer != null) {
+            mDzhRenderer.setBublePer(0, 0);
+        }
     }
 }

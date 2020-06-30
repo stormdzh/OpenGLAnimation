@@ -55,25 +55,29 @@ public class TVFocusActivity extends Activity implements View.OnFocusChangeListe
         findViewById(R.id.tvLine406).setOnFocusChangeListener(this);
         findViewById(R.id.tvLine407).setOnFocusChangeListener(this);
 
-        imgLine401=findViewById(R.id.imgLine401);
+        imgLine401 = findViewById(R.id.imgLine401);
         setImage();
     }
 
-    private int count=0;
+    private int count = 0;
+
     private void setImage() {
 
+        if (isFinishing()) {
+            return;
+        }
         imgLine401.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(count%2==0) {
+                if (count % 2 == 0) {
                     imgLine401.setImageResource(R.drawable.img_opgl_test);
-                }else{
+                } else {
                     imgLine401.setImageResource(R.drawable.img_opgl_test_2);
                 }
                 count++;
                 setImage();
             }
-        },2000);
+        }, 2000);
 
     }
 
@@ -93,7 +97,7 @@ public class TVFocusActivity extends Activity implements View.OnFocusChangeListe
         FocusHLMgr mgr = FocusHLMgr.getMgr(v.getContext());
         if (hasFocus) {
             if (mgr != null) {
-                LogUtil.i("adu",  "原始控件大小 onFocusChange width:" + v.getWidth() + "  height:" + v.getHeight());
+                LogUtil.i("adu", "原始控件大小 onFocusChange width:" + v.getWidth() + "  height:" + v.getHeight());
                 mgr.viewGotFocus(v);
             }
         } else {
@@ -101,5 +105,14 @@ public class TVFocusActivity extends Activity implements View.OnFocusChangeListe
                 mgr.viewLostFocus(v);
             }
         }
+    }
+
+    @Override
+    public void finish() {
+        if (mFocusHLMgr != null) {
+            mFocusHLMgr.detach(null, borderView);
+        }
+        super.finish();
+
     }
 }

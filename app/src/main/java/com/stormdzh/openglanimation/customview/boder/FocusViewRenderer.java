@@ -6,7 +6,6 @@ import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
-import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 
@@ -38,6 +37,9 @@ public class FocusViewRenderer {
     private int glViewTextureLoc;
     private int glViewPostionLoc;
     private int glViewTextureCoordLoc;
+    private boolean isInit=false;
+    private long endTime = 0;
+    private boolean viewIsChange = true;
 
     private String viewVertexShader_filter = "" +
             "attribute vec4 aViewPosition;\n" +
@@ -73,28 +75,32 @@ public class FocusViewRenderer {
     }
 
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        initBuffer();
+        if(!isInit) {
+            isInit=true;
+            initBuffer();
+        }
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) {
 
-        rootViewSufaceTexture = new SurfaceTexture(ROOT_TEX_ID);
-        rootViewSuface = new Surface(rootViewSufaceTexture);
+        if(rootViewSufaceTexture==null) {
+            rootViewSufaceTexture = new SurfaceTexture(ROOT_TEX_ID);
+            rootViewSuface = new Surface(rootViewSufaceTexture);
 
-        glViewProgram = GLESTools.createProgram(viewVertexShader_filter, viewFragmentshader_filter);
-        GLES20.glUseProgram(glViewProgram);
-        glViewTextureLoc = GLES20.glGetUniformLocation(glViewProgram, "uViewTexture");
+            glViewProgram = GLESTools.createProgram(viewVertexShader_filter, viewFragmentshader_filter);
+            GLES20.glUseProgram(glViewProgram);
+            glViewTextureLoc = GLES20.glGetUniformLocation(glViewProgram, "uViewTexture");
 
-        glViewPostionLoc = GLES20.glGetAttribLocation(glViewProgram, "aViewPosition");
-        glViewTextureCoordLoc = GLES20.glGetAttribLocation(glViewProgram, "aViewTextureCoord");
-
+            glViewPostionLoc = GLES20.glGetAttribLocation(glViewProgram, "aViewPosition");
+            glViewTextureCoordLoc = GLES20.glGetAttribLocation(glViewProgram, "aViewTextureCoord");
+        }
     }
 
 
     public void onDrawFrame(GL10 gl) {
 
         //绘制图片
-        if (drawView != null && (viewIsChange||refresh())) {
+        if (drawView != null &&rootViewSufaceTexture!=null&& (viewIsChange || refresh())) {
             viewIsChange = false;
             rootViewSufaceTexture.setDefaultBufferSize(drawView.getMeasuredWidth(), drawView.getMeasuredHeight());
             squareVertices = Arrays.copyOf(GLHelper.SquareVertices, GLHelper.SquareVertices.length);
@@ -119,24 +125,20 @@ public class FocusViewRenderer {
 
     }
 
-    private long endTime = 0;
-
     private boolean refresh() {
-        if (System.currentTimeMillis()-endTime > 500) {
+        if (System.currentTimeMillis() - endTime > 500) {
             endTime = System.currentTimeMillis();
             return true;
         }
         return false;
     }
 
-    private boolean viewIsChange = true;
-
     public void setRunderView(View view) {
         viewIsChange = true;
         drawView = view;
     }
 
-    public void updateRunderViewTexture() {
+    public synchronized void updateRunderViewTexture() {
         //drawview  to Texture
         Canvas canvas = rootViewSuface.lockCanvas(null);
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
@@ -152,7 +154,6 @@ public class FocusViewRenderer {
     public void updateViewLoacation() {
 
         if (squareVertices == null) return;
-        Log.i("adu", "焦点控件中   bubbleWidthPer：" + bubbleWidthPer + "  bubbleHeightPer:" + bubbleHeightPer);
         squareVertices[0] = squareVertices[0] * bubbleWidthPer;
         squareVertices[1] = squareVertices[1] * bubbleHeightPer;
         squareVertices[2] = squareVertices[2] * bubbleWidthPer;
@@ -172,5 +173,31 @@ public class FocusViewRenderer {
     public void setBublePer(float bubbleWidthPer, float bubbleHeightPer) {
         this.bubbleWidthPer = 1 - bubbleWidthPer;
         this.bubbleHeightPer = 1 - bubbleHeightPer;
+    }
+
+    public void destroy() {
+
+        if (drawIndecesBuffer != null) {
+            drawIndecesBuffer.clear();
+            drawIndecesBuffer = null;
+        }
+        if (shapeBuffer != null) {
+            shapeBuffer.clear();
+            shapeBuffer = null;
+        }
+        if (textrueBuffer != null) {
+            textrueBuffer.clear();
+            textrueBuffer = null;
+        }
+
+        if (rootViewSufaceTexture != null) {
+            rootViewSufaceTexture.release();
+            rootViewSufaceTexture = null;
+        }
+
+        if (rootViewSuface != null) {
+            rootViewSuface.release();
+            rootViewSuface = null;
+        }
     }
 }

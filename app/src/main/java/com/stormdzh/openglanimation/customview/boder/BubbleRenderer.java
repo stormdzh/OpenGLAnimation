@@ -8,7 +8,6 @@ import android.opengl.GLUtils;
 
 import com.stormdzh.openglanimation.R;
 import com.stormdzh.openglanimation.util.DeviceUtil;
-import com.stormdzh.openglanimation.util.LogUtil;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
@@ -58,11 +57,12 @@ public class BubbleRenderer {
     private Random random = new Random();
 
     //气泡列表
-    private List<PPItem> mBubbleList = new ArrayList<>();
+    private List<BubbleItem> mBubbleList = new ArrayList<>();
 
     private int mWidth, mHeight;
+
+    private Bitmap bitmap;
     //变换矩阵
-//    private int glMatrix;
     private int glProgram;
     private int glPPTextureLoc;
     private int glPPPostionLoc;
@@ -90,18 +90,16 @@ public class BubbleRenderer {
         this.mContext = context;
     }
 
-    //初始化坐标顶点 与 纹理顶点
     private void initBuffer() {
         drawIndecesBuffer = GLHelper.getDrawIndecesBuffer();
         textrueBuffer = GLHelper.getScreenTextureVerticesBuffer();
     }
 
     //生成一个气泡对象
-    public PPItem getBubbleItem(int orientation, int index) {
-        PPItem item = new PPItem();
+    public BubbleItem getBubbleItem(int orientation, int index) {
+        BubbleItem item = new BubbleItem();
         item.orientation = orientation;
         item.scaleSize = random.nextFloat() * (maxScale - minScale) + minScale;
-//        LogUtil.i("adu","item.scaleSize:"+item.scaleSize);
         item.index = index;
         item.setPPLocation();
         return item;
@@ -114,7 +112,6 @@ public class BubbleRenderer {
         int xNum = (int) Math.ceil((float) mWidth / (float) pixPPUnit) + 1;
         int yNum = (int) Math.ceil((float) mHeight / (float) pixPPUnit) + 1;
 
-//        LogUtil.i("adu","xNum:"+xNum+"  yNum:"+yNum);
         for (int i = 0; i < yNum; i++) {
             mBubbleList.add(getBubbleItem(OrientationLeft, i));
         }
@@ -129,9 +126,12 @@ public class BubbleRenderer {
         }
     }
 
+    private boolean isInit=false;
 
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 
+        if(isInit) return;
+        isInit=true;
         pixScope = DeviceUtil.dip2px(mContext, Scope);
 
         pixPPUnit = DeviceUtil.dip2px(mContext, addPPUnit);
@@ -139,7 +139,7 @@ public class BubbleRenderer {
         initBuffer();
 
 //        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.focus_border_pp);
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.focus_bubble_red);
+        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.focus_bubble_red);
         ppTexture = GLESTools.loadTexture(bitmap, GLESTools.NO_TEXTURE);
 
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
@@ -149,7 +149,11 @@ public class BubbleRenderer {
         glPPTextureLoc = GLES20.glGetUniformLocation(glProgram, "uPPTexture");
         glPPPostionLoc = GLES20.glGetAttribLocation(glProgram, "aPPPosition");
         glPPTextureCoordLoc = GLES20.glGetAttribLocation(glProgram, "aPPTextureCoord");
-//        glMatrix = GLES20.glGetUniformLocation(glProgram, "vMatrix");
+
+        if (bitmap != null) {
+            bitmap.recycle();
+            bitmap = null;
+        }
 
     }
 
@@ -157,15 +161,18 @@ public class BubbleRenderer {
 
 //        bubbleW = 0.02f;
         bubbleH = 0.02f;
-        if (mWidth!=width) {
+        if (mWidth != width) {
             this.mWidth = width;
             this.mHeight = height;
-//            isPerChange = false;
             bubbleW = bubbleH * height / width;
-            LogUtil.i("adu", "气泡 onSurfaceChanged  bubbleW:"+bubbleW+"    bubbleH:"+bubbleH+"   mWidth:"+mWidth+"   mHeight:"+mHeight);
-//            LogUtil.i("adu", "气泡 bubbleW:" + bubbleW);
+            if (mBubbleList != null) {
+                for (int i = 0; i < mBubbleList.size(); i++) {
+                    mBubbleList.get(i).destroy();
+                }
+                mBubbleList.clear();
+            }
             initBubbleData();
-            for (PPItem ppItem : mBubbleList) {
+            for (BubbleItem ppItem : mBubbleList) {
                 ppItem.setPPLocation();
             }
         }
@@ -180,7 +187,7 @@ public class BubbleRenderer {
         GLES20.glEnableVertexAttribArray(glPPPostionLoc);
         GLES20.glEnableVertexAttribArray(glPPTextureCoordLoc);
 
-        for (PPItem ppItem : mBubbleList) {
+        for (BubbleItem ppItem : mBubbleList) {
             ppItem.drawPP();
         }
 
@@ -188,12 +195,45 @@ public class BubbleRenderer {
         GLHelper.disableVertex(glPPPostionLoc, glPPTextureCoordLoc);
     }
 
-    public class PPItem {
+    public void destroy() {
+
+        if (drawIndecesBuffer != null) {
+            drawIndecesBuffer.clear();
+            drawIndecesBuffer = null;
+        }
+        if (textrueBuffer != null) {
+            textrueBuffer.clear();
+            textrueBuffer = null;
+        }
+
+        if (bitmap != null && !bitmap.isRecycled()) {
+            bitmap.recycle();
+            bitmap = null;
+        }
+
+        if (random != null) {
+            random = null;
+        }
+
+        if (mBubbleList != null) {
+            destroyBubble();
+            mBubbleList.clear();
+            mBubbleList = null;
+        }
+
+    }
+
+    private void destroyBubble() {
+        for (int i = 0; i < mBubbleList.size(); i++) {
+            mBubbleList.get(i).destroy();
+        }
+    }
+
+    public class BubbleItem {
 
         public int index;
         public float scaleSize = 1.0f;
         public int orientation = OrientationLeft;
-        private float moveOffset = 0;
         private float ppVertices[];
         private FloatBuffer shapeBuffer = GLHelper.getShapeVerticesBuffer();
         private float x, y;
@@ -212,8 +252,6 @@ public class BubbleRenderer {
             ppVertices[6] = bubbleW;
             ppVertices[7] = bubbleH;
             bubbleScale(scaleSize);
-
-//            LogUtil.i("adu", "气泡 index:"+index+"  bubbleW:"+bubbleW+"  bubbleH:"+bubbleH);
 
             int mideaHei = mHeight / 2;
             int mideaWid = mWidth / 2;
@@ -365,6 +403,16 @@ public class BubbleRenderer {
                 }
             }
             return false;
+        }
+
+
+        public void destroy() {
+            if (shapeBuffer != null) {
+                shapeBuffer.clear();
+                shapeBuffer = null;
+            }
+
+            ppVertices = null;
         }
     }
 }
