@@ -70,10 +70,12 @@ public class DzhGLSurfaceView extends GLSurfaceView {
         rootLayoutParams.height = (int) (height  + bubbleWidth * 2);
         setLayoutParams(rootLayoutParams);
 
-        bubbleWidthPer = (float) bubbleWidth / (width  + bubbleWidth);
-        bubbleHeightPer = (float) bubbleWidth / (height  + bubbleWidth);
-        LogUtil.i("adu", "width:" + width + "  height:" + height + "  bubbleWidth:" + bubbleWidth);
-        LogUtil.i("adu", "bubbleWidthPer:" + bubbleWidthPer + "  bubbleHeightPer:" + bubbleHeightPer);
+        bubbleWidthPer =bubbleWidth*2f / (width  + bubbleWidth*2f);
+        bubbleHeightPer = bubbleWidth*2f / (height  + bubbleWidth*2f);
+
+        LogUtil.i("adu", "计算尺寸 width:" + width + "  height:" + height + "  bubbleWidth:" + bubbleWidth);
+        LogUtil.i("adu", " 获取焦点控件尺寸 width:" + itemView.getWidth() + "  height:" + itemView.getHeight());
+        LogUtil.i("adu", "计算比例 bubbleWidthPer:" + bubbleWidthPer + "  bubbleHeightPer:" + bubbleHeightPer);
 
         mDzhRenderer.setBublePer(bubbleWidthPer, bubbleHeightPer);
 
@@ -107,5 +109,9 @@ public class DzhGLSurfaceView extends GLSurfaceView {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    public void onMPause() {
+        mDzhRenderer.setBublePer(0, 0);
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
+import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 
@@ -96,6 +97,7 @@ public class FocusViewRenderer {
         if (drawView != null && viewIsChange) {
             viewIsChange = false;
             rootViewSufaceTexture.setDefaultBufferSize(drawView.getMeasuredWidth(), drawView.getMeasuredHeight());
+            squareVertices = Arrays.copyOf(GLHelper.SquareVertices, GLHelper.SquareVertices.length);
             updateViewLoacation();
 
             updateRunderViewTexture();
@@ -140,6 +142,7 @@ public class FocusViewRenderer {
     public void updateViewLoacation() {
 
         if (squareVertices == null) return;
+        Log.i("adu","焦点控件中   bubbleWidthPer："+bubbleWidthPer+   "  bubbleHeightPer:"+bubbleHeightPer);
         squareVertices[0] = squareVertices[0] * bubbleWidthPer;
         squareVertices[1] = squareVertices[1] * bubbleHeightPer;
         squareVertices[2] = squareVertices[2] * bubbleWidthPer;

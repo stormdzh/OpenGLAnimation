@@ -70,7 +70,7 @@ public class TVFocusActivity extends Activity implements View.OnFocusChangeListe
         FocusHLMgr mgr = FocusHLMgr.getMgr(v.getContext());
         if (hasFocus) {
             if (mgr != null) {
-                LogUtil.i("adu", "onFocusChange width:" + v.getWidth() + "  height:" + v.getHeight());
+                LogUtil.i("adu",  "原始控件大小 onFocusChange width:" + v.getWidth() + "  height:" + v.getHeight());
                 mgr.viewGotFocus(v);
             }
         } else {

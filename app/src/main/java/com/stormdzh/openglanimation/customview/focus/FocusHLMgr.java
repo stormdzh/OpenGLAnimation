@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import com.stormdzh.openglanimation.R;
 import com.stormdzh.openglanimation.customview.boder.DzhGLSurfaceView;
 import com.stormdzh.openglanimation.util.DeviceUtil;
+import com.stormdzh.openglanimation.util.LogUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
@@ -46,7 +47,7 @@ public class FocusHLMgr implements ViewTreeObserver.OnScrollChangedListener {
     private ValueAnimator mAnim = ValueAnimator.ofFloat(1.0f, mScale);
     private int mPl, mPt;
     private boolean mHintAllFocus; //不处理焦点
-    private int ainmTime=100;
+    private int ainmTime=150;
     Handler.Callback mCb = new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message msg) {
@@ -66,9 +67,6 @@ public class FocusHLMgr implements ViewTreeObserver.OnScrollChangedListener {
         this.mBoderLightView = boderLightView;
 
         SMgrMap.put(aFocusHLT.getContext(), new WeakReference<FocusHLMgr>(this));
-
-        //全局监听
-//        mFocusHLT.getViewTreeObserver().addOnScrollChangedListener(this);
 
         mHandler = new Handler(Looper.myLooper(), mCb);
         mAnim.setDuration(150);
@@ -97,11 +95,6 @@ public class FocusHLMgr implements ViewTreeObserver.OnScrollChangedListener {
                         mBoderLightView.setFocusView(mLastFocus);
                         // TODO: 2020-06-28 修改位置
                         mBoderLightView.setBorderSize(mLastFocus, curX, curY, nw, nh, mScale);
-
-//                        ViewGroup.LayoutParams layoutParams = mBoderLightView.getLayoutParams();
-//                        layoutParams.height=nh;
-//                        layoutParams.width=nw;
-//                        mBoderLightView.setLayoutParams(layoutParams);
                     }
                 }
             }
@@ -173,20 +166,6 @@ public class FocusHLMgr implements ViewTreeObserver.OnScrollChangedListener {
      *
      * @param scale scale
      */
-//    private void scaleItemView(float scale) {
-//        if (mLastFocus == null) return;
-//        ViewCompat.animate(mLastFocus)
-//                .scaleX(scale)
-//                .scaleY(scale)
-//                .setDuration(ainmTime)
-//                .start();
-//    }
-
-    /**
-     * 缩放控件
-     *
-     * @param scale scale
-     */
     private void scaleItemView(float scale, View view) {
         if (view == null) return;
         ViewCompat.animate(view)
@@ -194,11 +173,6 @@ public class FocusHLMgr implements ViewTreeObserver.OnScrollChangedListener {
                 .scaleY(scale)
                 .setDuration(ainmTime)
                 .start();
-//        ViewCompat.animate(view)
-//                .scaleX(1.0f)
-//                .scaleY(1.0f)
-//                .setDuration(ainmTime)
-//                .start();
     }
 
     /**
@@ -211,7 +185,7 @@ public class FocusHLMgr implements ViewTreeObserver.OnScrollChangedListener {
             mBoderLightView.setVisibility(View.INVISIBLE);
         }
         if (mLastFocus == view) {
-            mBoderLightView.onPause();
+            mBoderLightView.onMPause();
             mBoderLightView.setVisibility(View.INVISIBLE);
             scaleItemView(1.0f,mLastFocus);
             view.clearAnimation();
@@ -262,6 +236,7 @@ public class FocusHLMgr implements ViewTreeObserver.OnScrollChangedListener {
             //修复气泡层动画
             if (mBoderLightView != null) {
                 // TODO: 2020-06-28 修改位置
+//                mBoderLightView.setFocusView(mLastFocus);
                 mBoderLightView.setBorderSize(curX, curY);
 //                mBoderLightView.setX(curX);
 //                mBoderLightView.setY(curY);
@@ -275,8 +250,8 @@ public class FocusHLMgr implements ViewTreeObserver.OnScrollChangedListener {
                     postCheckMsg();
                 }else{
                     if(mBoderLightView!=null){
-                        mBoderLightView.setVisibility(View.VISIBLE);
                         mBoderLightView.setFocusView(mLastFocus);
+                        mBoderLightView.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -330,6 +305,7 @@ public class FocusHLMgr implements ViewTreeObserver.OnScrollChangedListener {
         } else {
             scale = mScale;
         }
+        LogUtil.i("adu","缩放比例："+scale);
         return scale;
     }
 
