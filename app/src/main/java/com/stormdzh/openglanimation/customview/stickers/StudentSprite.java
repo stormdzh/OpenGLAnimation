@@ -9,7 +9,7 @@ import com.stormdzh.openglanimation.R;
 
 public class StudentSprite extends Sprite {
     Context ctx;
-    int pid2;
+    int program;
     int textureIds[]=new int[6];
     int curIndex =0;
     int twice=0;
@@ -29,8 +29,8 @@ public class StudentSprite extends Sprite {
     public void setUp() {
         int vertextid2 = ShaderUtils.createShader(GLES30.GL_VERTEX_SHADER, DEFAULT_VERTEXTGLSL);
         int fragmentid2 = ShaderUtils.createShader(GLES30.GL_FRAGMENT_SHADER, DEFAULT_FRAGMENESHADER);
-        pid2 = ShaderUtils.createProgram(vertextid2, fragmentid2);
-        mvpMartricLocatin=GLES30.glGetUniformLocation(pid2,MVPMATRIX);
+        program = ShaderUtils.createProgram(vertextid2, fragmentid2);
+        mvpMartricLocatin=GLES30.glGetUniformLocation(program,MVPMATRIX);
         textureIds[0]=initTexture(R.drawable.run3);
         textureIds[1]=initTexture(R.drawable.run2);
         textureIds[2]=initTexture(R.drawable.run1);
@@ -62,7 +62,7 @@ public class StudentSprite extends Sprite {
         GLES30.glEnable(GLES30.GL_BLEND);
         //2d贴图 开启后贴图会透明混合
         GLES30.glBlendFunc(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
-        GLES30.glUseProgram(pid2);
+        GLES30.glUseProgram(program);
 //        LogUtils.d("坐标转换高度","height"+(height-y-spriteHeight));
         GLES30.glViewport(x, height-y-spriteHeight, spriteWidth, spriteHeight);
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureIds[curIndex]);
@@ -90,6 +90,6 @@ public class StudentSprite extends Sprite {
 
     @Override
     public void release() {
-        GLES30.glDeleteProgram(pid2);
+        GLES30.glDeleteProgram(program);
     }
 }
