@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -46,6 +47,7 @@
         <activity android:name=".ui.activity.function.AlphaPicActivity" />
         <activity android:name=".ui.activity.function.BorderActivity" />
         <activity android:name=".ui.activity.function.TVFocusActivity" />
+        <activity android:name=".ui.activity.function.StickersActivity" />
     </application>
 
 </manifest>
