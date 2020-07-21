@@ -16,6 +16,7 @@ import com.stormdzh.openglanimation.ui.activity.function.AlphaPicActivity;
 import com.stormdzh.openglanimation.ui.activity.function.AlphaShapeActivity;
 import com.stormdzh.openglanimation.ui.activity.function.BorderActivity;
 import com.stormdzh.openglanimation.ui.activity.function.CircleActivity;
+import com.stormdzh.openglanimation.ui.activity.function.FBOActivity;
 import com.stormdzh.openglanimation.ui.activity.function.LineActivity;
 import com.stormdzh.openglanimation.ui.activity.function.PicActivity;
 import com.stormdzh.openglanimation.ui.activity.function.PointActivity;
@@ -28,6 +29,7 @@ import com.stormdzh.openglanimation.ui.activity.function.TotateActivity;
 import com.stormdzh.openglanimation.ui.activity.function.TranslateActivity;
 import com.stormdzh.openglanimation.ui.activity.function.TrapezoidActivity;
 import com.stormdzh.openglanimation.ui.activity.function.TriangleActivity;
+import com.stormdzh.openglanimation.ui.activity.function.VBOActivity;
 import com.stormdzh.openglanimation.ui.activity.function.YuvActivity;
 import com.stormdzh.openglanimation.ui.activity.function.YuvPicActivity;
 import com.stormdzh.openglanimation.ui.adapter.FunctionAdapter;
@@ -110,5 +112,7 @@ public class MainActivity extends AppCompatActivity {
         functionList.add(new FunctionEntity("OpenGL 焦点边框", BorderActivity.class));
         functionList.add(new FunctionEntity("OpenGL TV焦点页面", TVFocusActivity.class));
         functionList.add(new FunctionEntity("OpenGL 贴纸", StickersActivity.class));
+        functionList.add(new FunctionEntity("OpenGL VBO", VBOActivity.class));
+        functionList.add(new FunctionEntity("OpenGL FBO", FBOActivity.class));
     }
 }

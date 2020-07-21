@@ -48,6 +48,8 @@
         <activity android:name=".ui.activity.function.BorderActivity" />
         <activity android:name=".ui.activity.function.TVFocusActivity" />
         <activity android:name=".ui.activity.function.StickersActivity" />
+        <activity android:name=".ui.activity.function.VBOActivity" />
+        <activity android:name=".ui.activity.function.FBOActivity" />
     </application>
 
 </manifest>
