@@ -50,6 +50,11 @@
         <activity android:name=".ui.activity.function.StickersActivity" />
         <activity android:name=".ui.activity.function.VBOActivity" />
         <activity android:name=".ui.activity.function.FBOActivity" />
+        <activity android:name=".ui.activity.function.EarthActivity" />
+
+
+
+        <receiver android:name=".util.notification.ClickReceiver"/>
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.stormdzh.openglanimation.ui.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.stormdzh.openglanimation.ui.activity.function.AlphaPicActivity;
 import com.stormdzh.openglanimation.ui.activity.function.AlphaShapeActivity;
 import com.stormdzh.openglanimation.ui.activity.function.BorderActivity;
 import com.stormdzh.openglanimation.ui.activity.function.CircleActivity;
+import com.stormdzh.openglanimation.ui.activity.function.EarthActivity;
 import com.stormdzh.openglanimation.ui.activity.function.FBOActivity;
 import com.stormdzh.openglanimation.ui.activity.function.LineActivity;
 import com.stormdzh.openglanimation.ui.activity.function.PicActivity;
@@ -33,6 +35,7 @@ import com.stormdzh.openglanimation.ui.activity.function.VBOActivity;
 import com.stormdzh.openglanimation.ui.activity.function.YuvActivity;
 import com.stormdzh.openglanimation.ui.activity.function.YuvPicActivity;
 import com.stormdzh.openglanimation.ui.adapter.FunctionAdapter;
+import com.stormdzh.openglanimation.util.notification.NotificationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FunctionAdapter mFunctionAdapter;
     private List<FunctionEntity> functionList;
+
+
+    private NotificationUtil mNotificationUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,25 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mFunctionAdapter);
+
+        testNotification();
+    }
+
+    private void testNotification() {
+
+        mNotificationUtil=new NotificationUtil();
+        mNotificationUtil.init(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mNotificationUtil.showWx();
+        }
+
+//        mRecyclerView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mNotificationUtil.cancel();
+//            }
+//        }, 5000);
     }
 
 
@@ -114,5 +139,6 @@ public class MainActivity extends AppCompatActivity {
         functionList.add(new FunctionEntity("OpenGL 贴纸", StickersActivity.class));
         functionList.add(new FunctionEntity("OpenGL VBO", VBOActivity.class));
         functionList.add(new FunctionEntity("OpenGL FBO", FBOActivity.class));
+        functionList.add(new FunctionEntity("OpenGL 绘制地球", EarthActivity.class));
     }
 }
