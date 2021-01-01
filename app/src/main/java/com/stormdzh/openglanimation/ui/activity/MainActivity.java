@@ -35,6 +35,7 @@ import com.stormdzh.openglanimation.ui.activity.function.VBOActivity;
 import com.stormdzh.openglanimation.ui.activity.function.YuvActivity;
 import com.stormdzh.openglanimation.ui.activity.function.YuvPicActivity;
 import com.stormdzh.openglanimation.ui.adapter.FunctionAdapter;
+import com.stormdzh.openglanimation.util.hook.HookSetOnClickListenerHelper;
 import com.stormdzh.openglanimation.util.notification.NotificationUtil;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HookSetOnClickListenerHelper.hookActivity();
         setContentView(R.layout.activity_main);
         requestPermissions();
         initData();

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.stormdzh.openglanimation.R;
 import com.stormdzh.openglanimation.entity.common.FunctionEntity;
+import com.stormdzh.openglanimation.util.hook.HookSetOnClickListenerHelper;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class FunctionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 mContext.startActivity(new Intent(mContext, functionEntity.target));
             }
         });
-
+        HookSetOnClickListenerHelper.hook(mContext, viewHolder.itemView);//这个hook的作用，是 用我们自己创建的点击事件代理对象，替换掉之前的点击事件。
 
     }
 
